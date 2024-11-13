@@ -1,4 +1,4 @@
-package org.example.schedule.entiry;
+package org.example.schedule.entity;
 
 
 import jakarta.persistence.*;
