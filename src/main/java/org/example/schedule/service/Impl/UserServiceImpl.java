@@ -2,11 +2,14 @@ package org.example.schedule.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.schedule.dto.UserRequestDto;
+import org.example.schedule.dto.UserResponseDto;
 import org.example.schedule.entity.User;
 import org.example.schedule.exception.UserExistException;
 import org.example.schedule.repository.UserRepository;
 import org.example.schedule.service.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +34,21 @@ public class UserServiceImpl implements UserService {
                         .build()
         ).getId();
 
+    }
+
+    @Override
+    public UserResponseDto findUserById(Long id) throws NoSuchElementException {
+
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("User not found")
+        );
+
+        return new UserResponseDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getModifiedAt()
+        );
     }
 }
