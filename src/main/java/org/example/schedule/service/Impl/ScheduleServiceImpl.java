@@ -51,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void updateSchedule(Long id, ScheduleRequestDto requestDto) {
+    public void updateSchedule(Long id, ScheduleRequestDto requestDto) throws NoSuchElementException {
 
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("No exist schedule")
@@ -66,8 +66,20 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public void deleteSchedule(Long id) throws NoSuchElementException {
+
+        scheduleRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("No exist schedule")
+        );
+
+        scheduleRepository.deleteById(id);
+    }
+
+    @Override
     public ScheduleResponseDto findScheduleById(Long id) throws NoSuchElementException {
-        Schedule schedule = scheduleRepository.findById(id).orElseThrow();
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("No exist schedule")
+        );
 
         return new ScheduleResponseDto(
                 schedule.getId(),

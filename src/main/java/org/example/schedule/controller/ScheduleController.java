@@ -61,4 +61,12 @@ public class ScheduleController {
 
     }
 
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    public void deleteSchedule(@PathVariable Long id){
+
+        scheduleService.deleteSchedule(id);
+
+    }
 }
