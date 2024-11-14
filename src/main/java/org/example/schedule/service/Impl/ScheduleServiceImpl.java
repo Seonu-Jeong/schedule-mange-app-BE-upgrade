@@ -1,5 +1,6 @@
 package org.example.schedule.service.Impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.schedule.dto.ScheduleRequestDto;
 import org.example.schedule.dto.ScheduleResponseDto;
@@ -19,6 +20,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     final private ScheduleRepository scheduleRepository;
 
+    @Override
     public Long saveSchedule(ScheduleRequestDto scheduleRequestDto) {
         return scheduleRepository.save(
                 Schedule.builder()
@@ -28,6 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         ).getId();
     }
 
+    @Override
     public List<ScheduleResponseDto> findAll(Long id) {
         Schedule[] schedules = scheduleRepository.findAllByUserId(id);
 
@@ -46,6 +49,23 @@ public class ScheduleServiceImpl implements ScheduleService {
         ).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public void updateSchedule(Long id, ScheduleRequestDto requestDto) {
+
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("No exist schedule")
+        );
+
+        if( requestDto.getTitle() != null)
+            schedule.setTitle(requestDto.getTitle());
+
+
+        if( requestDto.getContent() != null)
+            schedule.setContent(requestDto.getContent());
+    }
+
+    @Override
     public ScheduleResponseDto findScheduleById(Long id) throws NoSuchElementException {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow();
 

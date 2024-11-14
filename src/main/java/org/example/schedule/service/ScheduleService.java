@@ -12,4 +12,6 @@ public interface ScheduleService {
     public ScheduleResponseDto findScheduleById(Long id);
 
     public List<ScheduleResponseDto> findAll(Long id);
+
+    void updateSchedule(Long id, ScheduleRequestDto requestDto);
 }
