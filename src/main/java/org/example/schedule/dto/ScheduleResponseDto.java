@@ -13,6 +13,7 @@ public class ScheduleResponseDto {
     private Long id;
     private String title;
     private String content;
+    private String author;
 
     @JsonProperty("created_at")
     private LocalDateTime createdAt;

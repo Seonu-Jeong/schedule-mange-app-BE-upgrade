@@ -10,6 +10,7 @@ import org.example.schedule.dto.ScheduleResponseDto;
 import org.example.schedule.dto.UserResponseDto;
 import org.example.schedule.service.ScheduleService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,4 +44,13 @@ public class ScheduleController {
 
         return scheduleService.findAll(userResponseDto.getId());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> findScheduleById(
+            @PathVariable Long id) {
+
+        return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
+    }
+
+
 }

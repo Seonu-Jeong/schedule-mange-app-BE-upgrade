@@ -1,11 +1,15 @@
 package org.example.schedule.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+
+@Getter
+@NoArgsConstructor
 
 @Entity
 @Table(name = "user_tbl")
-@NoArgsConstructor
 public class User extends TimeBaseEntity {
 
     @Id
