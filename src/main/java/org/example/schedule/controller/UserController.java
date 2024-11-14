@@ -11,11 +11,10 @@ import org.example.schedule.exception.NoAuthoriyException;
 import org.example.schedule.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/users")
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
 
@@ -27,7 +26,7 @@ public class UserController {
 
         JsonObject obj = new JsonObject();
 
-        obj.addProperty("id", userService.saveSchedule(userRequestDto));
+        obj.addProperty("id", userService.saveUser(userRequestDto));
 
         return obj.toString();
     }

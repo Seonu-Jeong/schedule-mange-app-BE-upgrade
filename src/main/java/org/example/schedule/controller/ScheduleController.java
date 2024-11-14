@@ -11,13 +11,12 @@ import org.example.schedule.dto.UserResponseDto;
 import org.example.schedule.service.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/api/schedules")
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ScheduleController {
 

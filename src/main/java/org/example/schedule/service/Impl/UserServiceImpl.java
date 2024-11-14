@@ -2,6 +2,7 @@ package org.example.schedule.service.Impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.schedule.dto.LoginRequestDto;
 import org.example.schedule.dto.UserRequestDto;
 import org.example.schedule.dto.UserResponseDto;
 import org.example.schedule.entity.User;
@@ -20,9 +21,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Long saveSchedule(UserRequestDto userRequestDto) throws UserExistException {
+    public Long saveUser(UserRequestDto userRequestDto) throws UserExistException {
 
-        userRepository.findByEmail(userRequestDto.getEmail())
+        userRepository.findByEmailAndPassword(userRequestDto.getEmail(), userRequestDto.getPassword())
                 .ifPresent((user) -> {
                     throw new UserExistException();
                 });
@@ -72,5 +73,22 @@ public class UserServiceImpl implements UserService {
         );
 
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserResponseDto login(LoginRequestDto loginRequestDto) throws NoSuchElementException{
+
+        User user = userRepository.findByEmailAndPassword(
+                loginRequestDto.getEmail(), loginRequestDto.getPassword()
+        ).orElseThrow(NoSuchElementException::new);
+
+
+        return new UserResponseDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getModifiedAt()
+        );
     }
 }
