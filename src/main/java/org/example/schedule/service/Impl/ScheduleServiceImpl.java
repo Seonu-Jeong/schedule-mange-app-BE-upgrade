@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.schedule.dto.ScheduleRequestDto;
 import org.example.schedule.dto.ScheduleResponseDto;
 import org.example.schedule.entity.Schedule;
+import org.example.schedule.entity.User;
 import org.example.schedule.repository.ScheduleRepository;
+import org.example.schedule.repository.UserRepository;
 import org.example.schedule.service.ScheduleService;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,18 @@ import java.util.stream.Collectors;
 public class ScheduleServiceImpl implements ScheduleService {
 
     final private ScheduleRepository scheduleRepository;
+    final private UserRepository userRepository;
 
     @Override
-    public Long saveSchedule(ScheduleRequestDto scheduleRequestDto) {
+    public Long saveSchedule(ScheduleRequestDto scheduleRequestDto, Long id) {
+
+        User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+
         return scheduleRepository.save(
                 Schedule.builder()
                         .title(scheduleRequestDto.getTitle())
                         .content(scheduleRequestDto.getContent())
+                        .user(user)
                         .build()
         ).getId();
     }

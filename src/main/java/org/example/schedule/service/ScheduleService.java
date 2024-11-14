@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    public Long saveSchedule(ScheduleRequestDto scheduleRequestDto);
+    public Long saveSchedule(ScheduleRequestDto scheduleRequestDto, Long id);
 
     public ScheduleResponseDto findScheduleById(Long id);
 

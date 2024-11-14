@@ -24,11 +24,18 @@ public class ScheduleController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public String createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public String createSchedule(
+            @RequestBody ScheduleRequestDto scheduleRequestDto,
+            HttpServletRequest request
+    ) {
+
+        HttpSession session = request.getSession(false);
+
+        UserResponseDto userResponseDto = (UserResponseDto)session.getAttribute(Const.LOGIN_USER);
 
         JsonObject obj = new JsonObject();
 
-        obj.addProperty("id", scheduleService.saveSchedule(scheduleRequestDto));
+        obj.addProperty("id", scheduleService.saveSchedule(scheduleRequestDto, userResponseDto.getId()));
 
         return obj.toString();
     }
