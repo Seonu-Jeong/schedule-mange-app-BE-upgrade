@@ -7,4 +7,6 @@ public interface UserService {
     Long saveSchedule(UserRequestDto userRequestDto);
 
     UserResponseDto findUserById(Long id);
+
+    void updateUser(Long id, UserRequestDto requestDto);
 }

@@ -48,4 +48,22 @@ public class UserController {
 
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{id}")
+    public void updateUser(
+            @PathVariable Long id, @RequestBody UserRequestDto requestDto,
+            HttpServletRequest request
+    ) {
+
+        HttpSession session = request.getSession(false);
+
+        UserResponseDto userResponseDto = (UserResponseDto)session.getAttribute(Const.LOGIN_USER);
+
+        if(!id.equals(userResponseDto.getId())) {
+            throw new NoAuthorizationException();
+        }
+
+        userService.updateUser(id, requestDto);
+    }
 }

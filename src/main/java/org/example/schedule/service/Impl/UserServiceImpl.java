@@ -1,5 +1,6 @@
 package org.example.schedule.service.Impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.schedule.dto.UserRequestDto;
 import org.example.schedule.dto.UserResponseDto;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long saveSchedule(UserRequestDto userRequestDto) throws UserExistException {
 
-        userRepository.findByUsername(userRequestDto.getName())
+        userRepository.findByEmail(userRequestDto.getEmail())
                 .ifPresent((user) -> {
                     throw new UserExistException();
                 });
@@ -50,5 +51,17 @@ public class UserServiceImpl implements UserService {
                 user.getCreatedAt(),
                 user.getModifiedAt()
         );
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(Long id, UserRequestDto requestDto) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("User not found")
+        );
+
+        user.setName(requestDto.getName());
+        user.setEmail(requestDto.getEmail());
+        user.setPassword(requestDto.getPassword());
     }
 }
