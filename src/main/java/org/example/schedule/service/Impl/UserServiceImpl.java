@@ -64,4 +64,13 @@ public class UserServiceImpl implements UserService {
         user.setEmail(requestDto.getEmail());
         user.setPassword(requestDto.getPassword());
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("No exist user")
+        );
+
+        userRepository.deleteById(id);
+    }
 }

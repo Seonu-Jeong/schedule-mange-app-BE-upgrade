@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.schedule.constant.Const;
 import org.example.schedule.dto.UserRequestDto;
 import org.example.schedule.dto.UserResponseDto;
-import org.example.schedule.exception.NoAuthorizationException;
+import org.example.schedule.exception.NoAuthoriyException;
 import org.example.schedule.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +38,8 @@ public class UserController {
             HttpServletRequest request
     ) {
 
-        HttpSession session = request.getSession(false);
-
-        UserResponseDto userResponseDto = (UserResponseDto)session.getAttribute(Const.LOGIN_USER);
-
-        if(!id.equals(userResponseDto.getId())) {
-            throw new NoAuthorizationException();
+        if(hasAuthority(id, request)){
+            throw new NoAuthoriyException();
         }
 
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
@@ -56,14 +52,36 @@ public class UserController {
             HttpServletRequest request
     ) {
 
+        if(hasAuthority(id, request)){
+            throw new NoAuthoriyException();
+        }
+
+        userService.updateUser(id, requestDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id,
+                           HttpServletRequest request
+    ){
+
+        if(hasAuthority(id, request)){
+            throw new NoAuthoriyException();
+        }
+
+        userService.deleteUser(id);
+
+    }
+
+    boolean hasAuthority(Long id, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
         UserResponseDto userResponseDto = (UserResponseDto)session.getAttribute(Const.LOGIN_USER);
 
         if(!id.equals(userResponseDto.getId())) {
-            throw new NoAuthorizationException();
+            return true;
         }
 
-        userService.updateUser(id, requestDto);
+        return false;
     }
 }
