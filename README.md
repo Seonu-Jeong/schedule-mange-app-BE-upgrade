@@ -8,7 +8,9 @@
 
 - API 명세서 작성 학습
 - Spring MVC 학습
+- Jpa Entity 제작 학습
 - Spring Data JPA 학습
+- Spring Data JPA Auditing 학습
 - Cookie/Sesseion 인증, Servlet Filter 학습
 
 ## 개발 환경
