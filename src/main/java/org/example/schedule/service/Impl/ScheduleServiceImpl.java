@@ -26,7 +26,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Long saveSchedule(ScheduleRequestDto scheduleRequestDto, Long id) {
 
-        User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new NoSuchElementException("user not found"));
 
         return scheduleRepository.save(
                 Schedule.builder()

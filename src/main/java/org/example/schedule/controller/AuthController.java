@@ -8,12 +8,13 @@ import org.example.schedule.constant.Const;
 import org.example.schedule.dto.LoginRequestDto;
 import org.example.schedule.dto.UserRequestDto;
 import org.example.schedule.dto.UserResponseDto;
+import org.example.schedule.exception.UserExistException;
 import org.example.schedule.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 
@@ -59,6 +60,24 @@ public class AuthController {
             session.invalidate(); // 해당 세션(데이터)을 삭제한다.
         }
 
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<String> noExistExceptionHandler(Exception e) {
+        JsonObject obj = new JsonObject();
+
+        obj.addProperty("error_msg", e.getMessage());
+
+        return new ResponseEntity<>(obj.toString(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({UserExistException.class})
+    public ResponseEntity<String> userExistExceptionHandler(Exception e) {
+        JsonObject obj = new JsonObject();
+
+        obj.addProperty("error_msg", "already exist");
+
+        return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);
     }
 
 }

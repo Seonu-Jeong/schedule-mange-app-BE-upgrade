@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @RequestMapping("/api/users")
 @RestController
 @RequiredArgsConstructor
@@ -70,6 +72,24 @@ public class UserController {
 
         userService.deleteUser(id);
 
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<String> NoExistExceptionHandler(Exception e) {
+        JsonObject obj = new JsonObject();
+
+        obj.addProperty("error_msg", e.getMessage());
+
+        return new ResponseEntity<>(obj.toString(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({NoAuthoriyException.class})
+    public ResponseEntity<String> NoAuthoriyExceptionHandler(Exception e) {
+        JsonObject obj = new JsonObject();
+
+        obj.addProperty("error_msg", "No Authority");
+
+        return new ResponseEntity<>(obj.toString(), HttpStatus.FORBIDDEN);
     }
 
     boolean hasAuthority(Long id, HttpServletRequest request) {

@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(Long id, UserRequestDto requestDto) {
+    public void updateUser(Long id, UserRequestDto requestDto) throws NoSuchElementException {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("User not found")
         );
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id) throws NoSuchElementException {
         userRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("No exist user")
         );
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByEmailAndPassword(
                 loginRequestDto.getEmail(), loginRequestDto.getPassword()
-        ).orElseThrow(NoSuchElementException::new);
+        ).orElseThrow(()->new NoSuchElementException("No exist user"));
 
 
         return new UserResponseDto(

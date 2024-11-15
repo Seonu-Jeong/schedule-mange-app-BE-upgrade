@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RequestMapping("/api/schedules")
 @RestController
@@ -75,4 +76,15 @@ public class ScheduleController {
         scheduleService.deleteSchedule(id);
 
     }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<String> NoExistExceptionHandler(Exception e) {
+        JsonObject obj = new JsonObject();
+
+        obj.addProperty("error_msg", e.getMessage());
+
+        return new ResponseEntity<>(obj.toString(), HttpStatus.NOT_FOUND);
+    }
+
+
 }
