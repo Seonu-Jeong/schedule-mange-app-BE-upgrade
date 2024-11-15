@@ -62,8 +62,9 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id,
-                           HttpServletRequest request
+    public void deleteUser(
+            @PathVariable Long id,
+            HttpServletRequest request
     ){
 
         if(hasAuthority(id, request)){
